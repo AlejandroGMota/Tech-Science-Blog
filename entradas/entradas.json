@@ -1,6 +1,6 @@
 [
     {
-        "title": "Agentes De IA",
+        "title": "Agentes De Ia",
         "file": "../entradas/agentes-de-ia.html",
         "date": "2024-12-03",
         "content": "Los agentes de inteligencia artificial (IA) están revolucionando la manera en que interactuamos con la tecnología.",
@@ -8,11 +8,27 @@
         "stars": 5
     },
     {
-        "title": "Sensores Agrónomos Con IA Y Tecnología",
+        "title": "Avances Más Recientes En Web 3",
+        "file": "../entradas/avances-más-recientes-en-web-3.html",
+        "date": "2024-12-04",
+        "content": "La Web 3, también conocida como la web descentralizada, está transformando la manera en que interactuamos con la tecnología.",
+        "category": "General",
+        "stars": 5
+    },
+    {
+        "title": "Sensores Agrónomos Con Ia Y Tecnología",
         "file": "../entradas/sensores-agrónomos-con-ia-y-tecnología.html",
         "date": "2024-12-03",
         "content": "La inteligencia artificial (IA) está marcando un cambio significativo en la manera de gestionar los cultivos agrícolas.",
         "category": "IA",
         "stars": 3
+    },
+    {
+        "title": "Sistemas De Riego Entre Países Desarrollados Y Menos Desarrollados",
+        "file": "../entradas/sistemas-de-riego-entre-países-desarrollados-y-menos-desarrollados.html",
+        "date": "2024-12-03",
+        "content": "El uso de drones para optimizar los sistemas de riego está revolucionando la agricultura mundial.",
+        "category": "General",
+        "stars": 4
     }
 ]
