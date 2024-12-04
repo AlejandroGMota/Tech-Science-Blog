@@ -95,13 +95,18 @@
                 const entryElement = document.createElement('div');
                 entryElement.classList.add('entry');
 
+                // Crear el resumen (primeros 200 caracteres)
+                const summary = entryContent.slice(0, 200) + '...';
+
                 // Crear la estructura de la entrada
                 entryElement.innerHTML = `
                     <h2>${entry.title}</h2>
                     <p><strong>Categoría:</strong> ${entry.category}</p>
                     <p><strong>Fecha de Publicación:</strong> ${entry.date}</p>
-                    <p><strong>Resumen:</strong> ${entryContent.slice(0, 200)}...</p>
+                    <p><strong>Resumen:</strong> ${summary}</p>
                     <p><strong>Calificación:</strong> ${getStarRating(entry.stars)}</p>
+                    <!-- Agregar el enlace al artículo completo -->
+                    <p><a href="${entry.file}" target="_blank">Leer artículo completo</a></p>
                 `;
 
                 resultsContainer.appendChild(entryElement);
