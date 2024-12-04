@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Entradas - Tech & Science Blog</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <style>
+        /* Reset de estilos */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        /* Header */
+        header {
+            background: #0044cc;
+            color: white;
+            padding: 10px 0;
+            text-align: center;
+            position: sticky;
+            top: 0;
+        }
+
+        header .logo h1 {
+            font-size: 2rem;
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 10px 0;
+        }
+
+        nav ul li {
+            display: inline;
+            margin: 0 15px;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 1rem;
+            transition: color 0.3s;
+        }
+
+        nav ul li a:hover {
+            color: #ffdd57;
+        }
+
+        /* Buscador de entradas */
+        .search-section {
+            padding: 40px 10%;
+            text-align: center;
+        }
+
+        #search-bar {
+            padding: 12px;
+            margin: 10px;
+            width: 60%;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        .filters {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .filters select, #date-filter {
+            padding: 10px;
+            margin: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            width: 200px;
+        }
+
+        .filters select {
+            background-color: #fff;
+            color: #333;
+        }
+
+        /* Resultados de búsqueda */
+        #results-container {
+            margin-top: 20px;
+        }
+
+        .entry {
+            background-color: #fff;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .entry h3 {
+            margin-top: 0;
+            color: #0044cc;
+        }
+
+        .entry-content {
+            margin-top: 10px;
+        }
+
+        .stars {
+            display: inline-block;
+            margin-top: 10px;
+        }
+
+        .stars span {
+            color: gold;
+            font-size: 20px;
+        }
+
+        .stars span.empty {
+            color: #ccc;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #0044cc;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="logo">
+            <h1>Tech & Science Blog</h1>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="../index.html">Inicio</a></li>
+                <li><a href="#about">Quiénes Somos</a></li>
+                <li><a href="#services">Qué Hacemos</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Buscador de entradas -->
+    <section class="search-section">
+        <h2>Buscar Entradas</h2>
+        <input type="text" id="search-bar" placeholder="Buscar por título, categoría o palabras clave">
+        
+        <!-- Filtros -->
+        <div class="filters">
+            <select id="category-filter">
+                <option value="">Categoría</option>
+            </select>
+            <input type="date" id="date-filter" />
+        </div>
+
+        <!-- Resultados de la búsqueda -->
+        <div id="results-container"></div>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 Tech & Science Blog. Todos los derechos reservados.</p>
+    </footer>
+
+    <script>
+        // Función para cargar el contenido de cada entrada
+        async function loadContent(file) {
+            try {
+                const response = await fetch(file);
+                if (!response.ok) {
+                    throw new Error('No se pudo cargar el archivo');
+                }
+                const text = await response.text();
+                return text;
+            } catch (error) {
+                console.error('Error cargando el contenido:', error);
+                return '';
+            }
+        }
+
+        // Función para obtener la categoría de una entrada
+        function getCategory(content) {
+            const categories = {
+                IA: /inteligencia artificial|agentes de IA|aprendizaje automático/i,
+                Robotics: /robots?|autónomos?|automáticos?/i,
+                Biotech: /biotecnología|células|genes|biología/i
+            };
+
+            for (let category in categories) {
+                if (categories[category].test(content)) {
+                    return category;
+                }
+            }
+            return "Otros";
+        }
+
+        // Función para calcular las estrellas de la entrada
+        function getStars(content) {
+            let stars = 0;
+            const keywords = ["innovador", "revolucionario", "tecnología", "avance", "futuro"];
+            keywords.forEach(keyword => {
+                if (content.toLowerCase().includes(keyword)) {
+                    stars++;
+                }
+            });
+            return stars;
+        }
+
+        // Función para cargar todas las entradas desde el archivo JSON
+        async function loadEntries() {
+            const entries = [];
+            const fileNames = await fetchEntriesFromFolder('entradas');
+            
+            for (const fileName of fileNames) {
+                const content = await loadContent(fileName);
+                const date = fileName.split('/')[1].split('.')[0]; // Asumiendo formato yyyy-mm-dd
+                const title = content.match(/<title>(.*?)<\/title>/i)[1];
+
+                entries.push({
+                    title,
+                    file: fileName,
+                    date: date,
+                    content: content,
+                    category: getCategory(content),
+                    stars: getStars(content) //stars
+                });
+            }
+            // Ordenar las entradas por fecha, de más reciente a más antigua
+            entries.sort((a, b) => new Date(b.date) - new Date(a.date));
+            return entries;
+        }
+
+        // Función para obtener los nombres de los archivos desde un archivo JSON
+        async function fetchEntriesFromFolder(folder) {
+            try {
+                const response = await fetch("../entradas/entradas.json"); // Ruta al archivo JSON
+                if (!response.ok) {
+                    throw new Error("No se pudo cargar el archivo JSON");
+                }
+
+                const data = await response.json();
+                return data.entries; // Devuelve el array de archivos
+            } catch (error) {
+                console.error("Error obteniendo los archivos:", error);
+                return [];
+            }
+        }
+
+        // Función para filtrar y mostrar las entradas
+        async function filterEntries() {
+            const searchQuery = document.getElementById("search-bar").value.toLowerCase();
+            const categoryFilter = document.getElementById("category-filter").value;
+            const dateFilter = document.getElementById("date-filter").value;
+
+            const entries = await loadEntries();
+            const filteredEntries = entries.filter(entry => {
+                const titleMatch = entry.title.toLowerCase().includes(searchQuery);
+                const categoryMatch = categoryFilter ? entry.category === categoryFilter : true;
+                const dateMatch = dateFilter ? new Date(entry.date) >= new Date(dateFilter) : true;
+
+                return titleMatch && categoryMatch && dateMatch;
+            });
+
+            displayEntries(filteredEntries);
+        }
+
+        // Función para mostrar las entradas
+        function displayEntries(entriesToDisplay) {
+            const resultsContainer = document.getElementById("results-container");
+            resultsContainer.innerHTML = '';
+
+            if (entriesToDisplay.length > 0) {
+                entriesToDisplay.forEach(entry => {
+                    const entryElement = document.createElement("div");
+                    entryElement.classList.add("entry");
+
+                    entryElement.innerHTML = `
+                        <h3>${entry.title}</h3>
+                        <p><strong>Categoría:</strong> ${entry.category} | <strong>Fecha:</strong> ${entry.date}</p>
+                        <div class="entry-content">${entry.content.slice(0, 200)}...</div>
+                        <div class="stars">${getStarRating(entry.stars)}</div>
+                    `;
+                    resultsContainer.appendChild(entryElement);
+                });
+            } else {
+                resultsContainer.innerHTML = '<p>No se encontraron resultados</p>';
+            }
+        }
+
+        // Función para obtener el formato de estrellas
+        function getStarRating(stars) {
+            let fullStars = '<span>★</span>'.repeat(stars);
+            let emptyStars = '<span class="empty">★</span>'.repeat(5 - stars);
+            return fullStars + emptyStars;
+        }
+
+        // Ejecutar la filtración al escribir en el buscador o cambiar filtros
+        document.getElementById("search-bar").addEventListener("input", filterEntries);
+        document.getElementById("category-filter").addEventListener("change", filterEntries);
+        document.getElementById("date-filter").addEventListener("change", filterEntries);
+
+        // Cargar categorías automáticamente
+        async function loadCategories() {
+            const entries = await loadEntries();
+            const categories = [...new Set(entries.map(entry => entry.category))];
+            const categoryFilter = document.getElementById("category-filter");
+
+            categories.forEach(category => {
+                const option = document.createElement("option");
+                option.value = category;
+                option.textContent = category;
+                categoryFilter.appendChild(option);
+            });
+        }
+
+        loadCategories();
+        loadEntries();
+    </script>
+</body>
+</html>
