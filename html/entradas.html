@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -29,20 +28,20 @@
         </div>
     </section>
 
-    <section id="results-container">
-        <!-- Las entradas se mostrarán aquí -->
-    </section>
+    <section id="results-container"></section>
 
     <footer>
-        <p>&copy; 2024 Blog de Tecnología</p>
+        <p>© 2024 Blog de Tecnología</p>
     </footer>
 
     <script>
+        let entries = [];  // Declare entries globally
+
         // Cargar datos del archivo JSON
         async function loadEntries() {
             try {
                 const response = await fetch('../entradas/entradas.json');
-                const entries = await response.json();
+                entries = await response.json();
 
                 populateCategoryFilter(entries); // Llenar las categorías
                 displayEntries(entries); // Mostrar las entradas en el contenedor
@@ -51,7 +50,7 @@
             }
         }
 
-        // Llenar el filtro de categorías
+        // Llenar el filtro de categorías con las categorías del JSON
         function populateCategoryFilter(entries) {
             const categorySet = new Set();
             entries.forEach(entry => categorySet.add(entry.category));
@@ -114,6 +113,7 @@
             const searchValue = document.getElementById('search-bar').value.toLowerCase();
             const categoryFilterValue = document.getElementById('category-filter').value;
             const dateFilterValue = document.getElementById('date-filter').value;
+
             const filteredEntries = entries.filter(entry => {
                 const matchesSearch = entry.title.toLowerCase().includes(searchValue) ||
                                       entry.content.toLowerCase().includes(searchValue);
@@ -127,7 +127,6 @@
         }
 
         // Inicializar la carga de entradas y configurar filtros
-        let entries = [];
         window.onload = async () => {
             await loadEntries();
             document.getElementById('search-bar').addEventListener('input', filterEntries);
