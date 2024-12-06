@@ -12,7 +12,7 @@
         "file": "../entradas/avances-más-recientes-en-web-3.html",
         "date": "2024-12-04",
         "content": "La Web 3, también conocida como la web descentralizada, está transformando la manera en que interactuamos con la tecnología.",
-        "category": "General",
+        "category": "Blockchain",
         "stars": 5
     },
     {
@@ -20,7 +20,7 @@
         "file": "../entradas/escombro-en-la-agronomía-y-tecnología.html",
         "date": "2024-12-04",
         "content": "El aprovechamiento de residuos de construcción y demolición, o escombros, ha surgido como una alternativa sostenible en un mundo que busca soluciones para reducir el impacto ambiental.",
-        "category": "General",
+        "category": "IA",
         "stars": 4
     },
     {
@@ -36,7 +36,15 @@
         "file": "../entradas/sistemas-de-riego-entre-países-desarrollados-y-menos-desarrollados.html",
         "date": "2024-12-03",
         "content": "El uso de drones para optimizar los sistemas de riego está revolucionando la agricultura mundial.",
-        "category": "General",
+        "category": "Agronomía",
         "stars": 4
+    },
+    {
+        "title": "Usos Del Data Science En La Confección De Ropa",
+        "file": "../entradas/usos-del-data-science-en-la-confección-de-ropa.html",
+        "date": "2024-12-05",
+        "content": "La industria de la confección está experimentando una transformación radical gracias al impacto del Data Science.",
+        "category": "IA",
+        "stars": 3
     }
 ]
