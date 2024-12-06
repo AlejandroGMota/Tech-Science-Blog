@@ -16,12 +16,28 @@
         "stars": 5
     },
     {
+        "title": "Como Chat Gpt Cambiará Tu Vida",
+        "file": "../entradas/como-chat-gpt-cambiará-tu-vida.html",
+        "date": "2024-12-05",
+        "content": "La inteligencia artificial (IA) ha llegado para revolucionar la forma en que interactuamos con el mundo.",
+        "category": "IA",
+        "stars": 3
+    },
+    {
         "title": "Escombro En La Agronomía Y Tecnología",
         "file": "../entradas/escombro-en-la-agronomía-y-tecnología.html",
         "date": "2024-12-04",
         "content": "El aprovechamiento de residuos de construcción y demolición, o escombros, ha surgido como una alternativa sostenible en un mundo que busca soluciones para reducir el impacto ambiental.",
         "category": "IA",
         "stars": 4
+    },
+    {
+        "title": "La Mejor Forma De Dormir",
+        "file": "../entradas/la-mejor-forma-de-dormir.html",
+        "date": "2024-12-05",
+        "content": "Dormir es una de las actividades más importantes para el bienestar general de las personas.",
+        "category": "IA",
+        "stars": 1
     },
     {
         "title": "Sensores Agrónomos Con Ia Y Tecnología",
