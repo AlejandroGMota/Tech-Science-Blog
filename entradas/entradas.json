@@ -24,6 +24,14 @@
         "stars": 3
     },
     {
+        "title": "Cómo La Inteligencia Artificial Está Transformando Tu Día A Día",
+        "file": "../entradas/cómo-la-inteligencia-artificial-está-transformando-tu-día-a-día.html",
+        "date": "2024-12-09",
+        "content": "La inteligencia artificial (IA) está cambiando la manera en que vivimos, trabajamos y nos relacionamos.",
+        "category": "IA",
+        "stars": 5
+    },
+    {
         "title": "Escombro En La Agronomía Y Tecnología",
         "file": "../entradas/escombro-en-la-agronomía-y-tecnología.html",
         "date": "2024-12-04",
@@ -38,6 +46,14 @@
         "content": "Dormir es una de las actividades más importantes para el bienestar general de las personas.",
         "category": "IA",
         "stars": 1
+    },
+    {
+        "title": "Por Qué No Debes Usar Generadores De Imágenes Como Estrategia De Contenido",
+        "file": "../entradas/por-qué-no-debes-usar-generadores-de-imágenes-como-estrategia-de-contenido.html",
+        "date": "2024-12-06",
+        "content": "En la era de la inteligencia artificial, los generadores de imágenes han ganado popularidad como una herramienta rápida y económica para la creación de contenido visual.",
+        "category": "IA",
+        "stars": 2
     },
     {
         "title": "Sensores Agrónomos Con Ia Y Tecnología",
