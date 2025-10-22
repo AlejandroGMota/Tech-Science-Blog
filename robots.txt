@@ -1,0 +1,19 @@
+User-agent: *
+Allow: /
+
+# Archivos y directorios específicos
+Allow: /entradas/
+Allow: /html/
+Allow: /css/
+Allow: /js/
+Allow: /img/
+
+# Bloquear archivos innecesarios para SEO
+Disallow: /ads.txt
+Disallow: /*.json$
+
+# Sitemap
+Sitemap: https://blog.alejandrogmota.com/sitemap.xml
+
+# Crawl-delay para bots (opcional)
+Crawl-delay: 1
