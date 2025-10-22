@@ -5,7 +5,7 @@
     <!-- Página Principal -->
     <url>
         <loc>https://blog.alejandrogmota.com/</loc>
-        <lastmod>2024-12-09</lastmod>
+        <lastmod>2025-10-22</lastmod>
         <changefreq>weekly</changefreq>
         <priority>1.0</priority>
     </url>
@@ -13,12 +13,19 @@
     <!-- Página de Entradas -->
     <url>
         <loc>https://blog.alejandrogmota.com/html/entradas.html</loc>
-        <lastmod>2024-12-09</lastmod>
+        <lastmod>2025-10-22</lastmod>
         <changefreq>daily</changefreq>
         <priority>0.9</priority>
     </url>
 
     <!-- Artículos -->
+    <url>
+        <loc>https://blog.alejandrogmota.com/entradas/panorama-económico-global-2026-según-premios-nobel.html</loc>
+        <lastmod>2025-10-22</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.9</priority>
+    </url>
+
     <url>
         <loc>https://blog.alejandrogmota.com/entradas/agentes-de-ia.html</loc>
         <lastmod>2024-12-03</lastmod>
