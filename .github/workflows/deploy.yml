@@ -1,0 +1,43 @@
+name: Deploy to Oracle Cloud VM
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'backend/**'
+      - 'frontend/**'
+      - 'Makefile'
+      - 'deploy/**'
+      - '.github/workflows/**'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.VM_HOST }}
+          username: ${{ secrets.VM_USER }}
+          key: ${{ secrets.VM_SSH_KEY }}
+          script: |
+            export PATH=$PATH:/usr/local/go/bin:/usr/local/node/bin
+
+            cd ~/Tech-Science-Blog
+            git pull origin main
+
+            # Build frontend
+            cd frontend
+            npm ci
+            npx vite build
+
+            # Build admin
+            npx vite build --config vite.admin.config.js
+            mv ../backend/admin-dist/admin.html ../backend/admin-dist/index.html 2>/dev/null || true
+
+            # Build backend
+            cd ../backend
+            CGO_ENABLED=0 go build -o tech-blog-api ./cmd/api/
+
+            # Restart service
+            sudo systemctl restart tech-blog
