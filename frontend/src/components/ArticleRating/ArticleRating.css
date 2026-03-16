@@ -1,0 +1,39 @@
+.article-rating {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+.stars {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.star {
+  background: none;
+  border: none;
+  font-size: 1.75rem;
+  color: #ddd;
+  cursor: pointer;
+  transition: color 0.15s, transform 0.15s;
+  padding: 0;
+  line-height: 1;
+}
+
+.star.active {
+  color: #f5a623;
+}
+
+.star:hover:not(.voted) {
+  transform: scale(1.2);
+}
+
+.star.voted {
+  cursor: default;
+}
+
+.rating-info {
+  color: #666;
+  font-size: 0.9rem;
+}

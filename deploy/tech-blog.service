@@ -1,0 +1,17 @@
+[Unit]
+Description=Tech Science Blog API
+After=network.target
+
+[Service]
+Type=simple
+User=ubuntu
+WorkingDirectory=/home/ubuntu/Tech-Science-Blog/backend
+ExecStart=/home/ubuntu/Tech-Science-Blog/backend/tech-blog-api
+Restart=always
+RestartSec=5
+Environment=PORT=8080
+Environment=ALLOWED_ORIGINS=https://blog.alejandrogmota.com
+EnvironmentFile=/home/ubuntu/Tech-Science-Blog/.env.production
+
+[Install]
+WantedBy=multi-user.target
