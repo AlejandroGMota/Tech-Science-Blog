@@ -149,12 +149,13 @@ func (s *OracleStore) CreateArticle(a *models.Article) error {
 	a.UpdatedAt = now
 
 	var id int64
-	err := s.db.QueryRow(
+	_, err := s.db.Exec(
 		`INSERT INTO articles (slug, title, content, excerpt, category, cover_image, author, published_at, created_at, updated_at)
 		VALUES (:1, :2, :3, :4, :5, :6, :7, :8, :9, :10)
 		RETURNING id INTO :11`,
 		a.Slug, a.Title, a.Content, a.Excerpt, a.Category, a.CoverImage, a.Author, a.PublishedAt, a.CreatedAt, a.UpdatedAt,
-	).Scan(&id)
+		sql.Out{Dest: &id},
+	)
 	if err != nil {
 		if strings.Contains(err.Error(), "ORA-00001") {
 			return fmt.Errorf("article already exists: %s", a.Slug)
@@ -236,10 +237,11 @@ func (s *OracleStore) GetArticleRating(slug string) (*models.RatingSummary, erro
 func (s *OracleStore) CreateContact(c *models.ContactMessage) error {
 	c.CreatedAt = time.Now()
 	var id int64
-	err := s.db.QueryRow(
+	_, err := s.db.Exec(
 		`INSERT INTO contacts (name, email, subject, message, created_at) VALUES (:1, :2, :3, :4, :5) RETURNING id INTO :6`,
 		c.Name, c.Email, c.Subject, c.Message, c.CreatedAt,
-	).Scan(&id)
+		sql.Out{Dest: &id},
+	)
 	if err != nil {
 		return err
 	}
