@@ -23,6 +23,14 @@
   font-size: 1.5rem;
   font-weight: 700;
   text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.navbar-logo-img {
+  height: 36px;
+  width: auto;
 }
 
 .navbar-links {
