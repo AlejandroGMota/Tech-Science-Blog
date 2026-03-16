@@ -33,6 +33,7 @@ jobs:
 
             # Build admin
             npx vite build --config vite.admin.config.js
+            mv ../backend/admin-dist/admin.html ../backend/admin-dist/index.html
 
             # Build backend
             cd ../backend
