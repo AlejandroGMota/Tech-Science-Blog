@@ -6,6 +6,7 @@ export default function Navbar() {
     <nav className="navbar">
       <div className="navbar-container">
         <Link to="/" className="navbar-logo">
+          <img src="/logo.png" alt="Tech & Science Blog" className="navbar-logo-img" />
           Tech & Science Blog
         </Link>
         <div className="navbar-links">
