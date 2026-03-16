@@ -2,7 +2,7 @@ name: Deploy to Oracle Cloud VM
 
 on:
   push:
-    branches: [main]
+    branches: [dev]
     paths:
       - 'backend/**'
       - 'frontend/**'
@@ -23,8 +23,8 @@ jobs:
           script: |
             export PATH=$PATH:/usr/local/go/bin:/usr/local/node/bin
 
-            cd ~/Tech-Science-Blog
-            git pull origin main
+            cd ~/tech-blog
+            git pull origin dev
 
             # Build frontend
             cd frontend
@@ -33,11 +33,10 @@ jobs:
 
             # Build admin
             npx vite build --config vite.admin.config.js
-            mv ../backend/admin-dist/admin.html ../backend/admin-dist/index.html 2>/dev/null || true
 
             # Build backend
             cd ../backend
-            CGO_ENABLED=0 go build -o tech-blog-api ./cmd/api/
+            go build -o tech-blog-api ./cmd/api/
 
             # Restart service
             sudo systemctl restart tech-blog
