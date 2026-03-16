@@ -2,7 +2,7 @@ name: Deploy to Oracle Cloud VM
 
 on:
   push:
-    branches: [dev]
+    branches: [main]
     paths:
       - 'backend/**'
       - 'frontend/**'
@@ -24,7 +24,7 @@ jobs:
             export PATH=$PATH:/usr/local/go/bin:/usr/local/node/bin
 
             cd ~/tech-blog
-            git pull origin dev
+            git pull origin main
 
             # Build frontend
             cd frontend
