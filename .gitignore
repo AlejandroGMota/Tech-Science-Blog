@@ -3,3 +3,23 @@ entradas.py
 promt-entradas.txt
 nueva-entrada.txt
 ideasBlog.txt
+
+# Environment variables
+.env
+.env.local
+.env.production
+
+# Build output
+backend/public-dist/
+backend/admin-dist/
+backend/tech-blog-api
+
+# Frontend
+frontend/node_modules/
+frontend/dist/
+
+# Go
+backend/vendor/
+
+# OS
+.DS_Store
