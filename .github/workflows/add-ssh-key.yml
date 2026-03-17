@@ -1,0 +1,19 @@
+name: Add SSH key to VM (one-time)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  add-key:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Add Cloud Shell SSH key
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.VM_HOST }}
+          username: ${{ secrets.VM_USER }}
+          key: ${{ secrets.VM_SSH_KEY }}
+          script: |
+            echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCo7qOXhDE1QIdT8IV7/R4sWSkN4MF05nM5W2ERXioKiMZfeguOfQT4tMh1RNMPfLRkwworijMWlkm9p6LLM7fZ9JRTfwTLwqMfFPgQYVBaQXQZ/T5wSWIdJ3qWJx5zydXxggDsuQXwu4RtzRzjZm+J38j220RskL171p6gOWBMyVKTjDP4TEv0ATDY67yxVW8gLXnNZMWnHSdxPyjZclYMRE6Nv09C0h/xcBExxjI2XWXd0fECuXbvQWEc+jYphYJvJshIMFT9WYwRa/zU7X64Zk9fGkuuTmfcHGQ2e7ovDCim2jqalV6WEq8ARjkVVluPm6O9/CRBYGAaEONI+/mlTaJWkctrHk1Uu7oeqDTN+uLsom5E6qLUUaVbVQnO7NUznRmtyyzdGT6SIUNTuchyXaZU5+C6nMnPBEdq5MYZ3zv4BzRKUlTFnV0Ez5OyODP5g5Hw2P3nO4G4Oku45VO51xZGXcq7mvdCsH5kh021a//WEdUblogzmLX+AzZHnL2X0S3H2hEDfXR40tplmhM+qTqA3SyL7wwt80V89oqpU9E5ydLFk2QpAsJsnO5WH4XMQZ7pO/c+/V67lwq7keRLTV/tOuENBeYmoMvB0AeF83yMLGzZWYhcsvSOTYzom7lvJnnao+YA3AN8iQK1Ri7Eipp7I1ITMKFjgJJ579jsPQ== cmke14y@4f6c714d8e5b" >> ~/.ssh/authorized_keys
+            echo "Key added successfully"
+            wc -l ~/.ssh/authorized_keys
