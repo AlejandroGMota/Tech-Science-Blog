@@ -14,7 +14,7 @@
 - [x] Go backend API (net/http stdlib)
 - [x] React 19 + Vite frontend (public + admin SPAs)
 - [x] Oracle Autonomous JSON DB connected (godror driver)
-- [x] 10 articles seeded in Oracle DB
+- [x] 11 articles seeded in Oracle DB (rewritten with real references and 10K+ chars each)
 - [x] Article rating system (1-5 stars, one per IP)
 - [x] Contact form (public create, admin list/delete)
 - [x] Admin panel with Bearer token auth
@@ -26,6 +26,9 @@
 - [x] Wallet configured for Autonomous DB
 - [x] Favicon + logo branding
 - [x] README rewritten (UTF-8)
+- [x] Admin SPA asset fix (Vite `base: '/admin/'`)
+- [x] .env generated from GitHub Secrets on each deploy
+- [x] Cloud Shell SSH key injected via GitHub Actions workflow
 
 ## Pending
 
@@ -105,3 +108,6 @@ blog.alejandrogmota.com
 | VM_HOST | 160.34.222.215 |
 | VM_USER | ubuntu |
 | VM_SSH_KEY | chavarria-vm private key |
+| ADMIN_USER | Admin login username |
+| ADMIN_PASS | Admin login password |
+| ORACLE_DB_DSN | Oracle DB connection string |
