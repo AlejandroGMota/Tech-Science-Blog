@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { apiFetch } from '../../hooks/useApi'
+import RichEditor from '../../components/RichEditor/RichEditor'
 import './AdminPage.css'
 
 export default function AdminPage() {
@@ -125,8 +126,11 @@ export default function AdminPage() {
               onChange={(e) => setForm({ ...form, author: e.target.value })} />
             <textarea placeholder="Extracto / Resumen" value={form.excerpt}
               onChange={(e) => setForm({ ...form, excerpt: e.target.value })} rows={3} />
-            <textarea placeholder="Contenido (HTML)" value={form.content}
-              onChange={(e) => setForm({ ...form, content: e.target.value })} rows={15} />
+            <RichEditor
+              key={editing || 'new'}
+              content={form.content}
+              onChange={(html) => setForm((prev) => ({ ...prev, content: html }))}
+            />
             <div className="form-actions">
               <button type="submit">{editing ? 'Guardar Cambios' : 'Publicar'}</button>
               {editing && <button type="button" onClick={() => { setEditing(null); setForm({ title: '', slug: '', content: '', excerpt: '', category: 'IA', author: 'Alejandro G. Mota' }) }}>Cancelar</button>}
