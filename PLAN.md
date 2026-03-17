@@ -29,14 +29,39 @@
 
 ## Pending
 
-- [ ] Image upload endpoint (OCI Object Storage bucket exists: tech-blog-images)
-- [ ] Google Analytics + AdSense integration
-- [ ] Responsive testing + Lighthouse audit
-- [ ] sitemap.xml + robots.txt
-- [ ] Rich text editor in admin (currently raw HTML)
-- [ ] Article pagination (currently returns all)
-- [ ] Draft/published article status
-- [ ] Rebuild comerciantes-chavarria frontend (stale IP in bundle)
+### 1. Rich Text Editor (admin panel)
+- [ ] Install TipTap editor (lightweight, extensible, no jQuery)
+- [ ] Replace raw HTML textarea with TipTap in AdminPage
+- [ ] Toolbar: bold, italic, headings (h2, h3), links, lists, blockquote, code
+- [ ] Image insert (paste URL for now, upload later)
+- [ ] HTML preview toggle (see raw HTML output)
+- [ ] Content outputs clean HTML for storage
+
+### 2. Image Upload (OCI Object Storage)
+- [ ] Backend: POST /api/articles/upload-image handler
+- [ ] OCI SDK integration (pre-authenticated requests or S3-compatible API)
+- [ ] Accept multipart/form-data, validate file type/size (max 5MB, jpg/png/webp)
+- [ ] Return public URL after upload
+- [ ] Frontend: drag-and-drop or button upload in editor
+- [ ] Bucket: tech-blog-images (namespace: axva0xxfvkwr, region: mx-queretaro-1)
+
+### 3. Article Pagination
+- [ ] Backend: add ?page=1&limit=10 query params to GET /api/articles
+- [ ] Return total count in response header or body
+- [ ] Frontend: pagination controls in EntradasPage
+- [ ] Admin: paginate article list if > 20
+
+### 4. Draft/Published Status
+- [ ] Add `status` field to Article model (draft/published)
+- [ ] Oracle DB: ALTER TABLE articles ADD status VARCHAR2(20) DEFAULT 'published'
+- [ ] Backend: filter by status on public GET (only published)
+- [ ] Admin: show all articles, toggle draft/published
+- [ ] Save as draft button in editor
+
+### 5. SEO
+- [ ] Backend: GET /sitemap.xml — dynamic from published articles
+- [ ] Backend: GET /robots.txt — allow all, point to sitemap
+- [ ] Meta tags per article (Open Graph, Twitter Cards)
 
 ## Architecture
 
