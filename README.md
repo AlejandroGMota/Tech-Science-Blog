@@ -60,6 +60,38 @@ blog.alejandrogmota.com
 
 ---
 
+## Article Loading
+
+### Current flow
+
+```
+EntradasPage → GET /api/articles?category=X&search=Y
+               → Store.GetArticles() (no limit, ordered by published_at DESC)
+               → returns all articles in one response
+
+ArticlePage  → GET /api/articles/{slug}
+             → GET /api/articles/{slug}/rating  (separate request)
+```
+
+### Bottlenecks
+
+| Area | Issue |
+|------|-------|
+| No pagination | Full table scan returned every time |
+| No HTTP cache headers | Every navigation re-fetches from DB |
+| Dual rating request | Article detail fires 2 sequential API calls |
+| No client cache | React state reset on route change |
+
+### Optimizations (planned)
+
+1. **Pagination** — `?page=1&limit=10` on `GET /api/articles` (already in Roadmap)
+2. **HTTP caching** — `Cache-Control: public, max-age=60` on list endpoint; `stale-while-revalidate` for article detail
+3. **Embed rating in article** — merge `RatingSummary` into `Article` response to eliminate the extra request on detail page
+4. **Frontend SWR** — use a simple cache map in `useApi.js` keyed by URL, invalidated on mutations
+5. **DB index** — ensure `published_at DESC` and `category` columns are indexed (Oracle auto-indexes PKs/unique; `category` needs manual index)
+
+---
+
 ## Local Development
 
 ### Backend
