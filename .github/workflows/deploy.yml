@@ -20,11 +20,23 @@ jobs:
           host: ${{ secrets.VM_HOST }}
           username: ${{ secrets.VM_USER }}
           key: ${{ secrets.VM_SSH_KEY }}
+          envs: ADMIN_USER,ADMIN_PASS,ORACLE_DB_DSN
           script: |
             export PATH=$PATH:/usr/local/go/bin:/usr/local/node/bin
 
             cd ~/tech-blog
             git pull origin main
+
+            # Write .env from secrets
+            printf '%s\n' \
+              "PORT=8081" \
+              "ALLOWED_ORIGINS=https://blog.alejandrogmota.com" \
+              "DB_TYPE=oracle" \
+              "TNS_ADMIN=/home/ubuntu/tech-blog/wallet" \
+              "ADMIN_USER=${ADMIN_USER}" \
+              "ADMIN_PASS=${ADMIN_PASS}" \
+              "ORACLE_DB_DSN=${ORACLE_DB_DSN}" \
+              > .env
 
             # Build frontend
             cd frontend
@@ -41,3 +53,7 @@ jobs:
 
             # Restart service
             sudo systemctl restart tech-blog
+        env:
+          ADMIN_USER: ${{ secrets.ADMIN_USER }}
+          ADMIN_PASS: ${{ secrets.ADMIN_PASS }}
+          ORACLE_DB_DSN: ${{ secrets.ORACLE_DB_DSN }}
