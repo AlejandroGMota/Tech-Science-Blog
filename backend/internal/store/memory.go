@@ -2,6 +2,7 @@ package store
 
 import (
 	"fmt"
+	"math"
 	"strings"
 	"sync"
 	"time"
@@ -142,12 +143,34 @@ func (s *MemoryStore) GetArticleRating(slug string) (*models.RatingSummary, erro
 		return &models.RatingSummary{Average: 0, Count: 0}, nil
 	}
 
-	var total int
+	now := time.Now()
+	recentDays := 60.0
+
+	var histSum, recentWeightedSum, recentTotalWeight float64
+	var recentCount int
 	for _, r := range ratings {
-		total += r.Score
+		histSum += float64(r.Score)
+		ageDays := now.Sub(r.CreatedAt).Hours() / 24.0
+		if ageDays <= recentDays {
+			freshness := 1.0 - (ageDays / recentDays)
+			recentWeightedSum += float64(r.Score) * freshness
+			recentTotalWeight += freshness
+			recentCount++
+		}
 	}
+
+	histAvg := histSum / float64(len(ratings))
+
+	avg := histAvg
+	if recentCount > 0 {
+		recentAvg := recentWeightedSum / recentTotalWeight
+		// α scales with recent vote proportion, max 0.7 so history always matters (30%)
+		alpha := math.Min(0.7, float64(recentCount)/float64(len(ratings)))
+		avg = alpha*recentAvg + (1-alpha)*histAvg
+	}
+
 	return &models.RatingSummary{
-		Average: float64(total) / float64(len(ratings)),
+		Average: avg,
 		Count:   len(ratings),
 	}, nil
 }
