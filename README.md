@@ -61,7 +61,7 @@ npm run dev
 
 ## Deployment
 
-Push to `dev` branch triggers automatic deployment via GitHub Actions.
+Push to `main` branch triggers automatic deployment via GitHub Actions.
 
 ## License
 

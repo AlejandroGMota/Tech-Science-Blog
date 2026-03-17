@@ -29,13 +29,13 @@
 
 ## Pending
 
-### 1. Rich Text Editor (admin panel)
-- [ ] Install TipTap editor (lightweight, extensible, no jQuery)
-- [ ] Replace raw HTML textarea with TipTap in AdminPage
-- [ ] Toolbar: bold, italic, headings (h2, h3), links, lists, blockquote, code
-- [ ] Image insert (paste URL for now, upload later)
-- [ ] HTML preview toggle (see raw HTML output)
-- [ ] Content outputs clean HTML for storage
+### 1. Rich Text Editor (admin panel) — DONE
+- [x] Install TipTap v2 editor (lightweight, extensible, no jQuery)
+- [x] Replace raw HTML textarea with TipTap in AdminPage
+- [x] Toolbar: bold, italic, underline, strike, headings (h2, h3), links, lists, blockquote, code block
+- [x] Image insert (paste URL)
+- [x] HTML preview toggle (see/edit raw HTML output)
+- [x] Content outputs clean HTML for storage
 
 ### 2. Image Upload (OCI Object Storage)
 - [ ] Backend: POST /api/articles/upload-image handler
