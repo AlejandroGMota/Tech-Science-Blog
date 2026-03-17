@@ -216,18 +216,44 @@ func (s *OracleStore) RateArticle(slug string, r *models.Rating) error {
 }
 
 func (s *OracleStore) GetArticleRating(slug string) (*models.RatingSummary, error) {
-	var avg sql.NullFloat64
+	var histAvg sql.NullFloat64
 	var count int
+	var recentAvg sql.NullFloat64
+	var recentCount int
+
 	err := s.db.QueryRow(
 		`SELECT AVG(score), COUNT(*) FROM ratings WHERE article_slug = :1`,
 		slug,
-	).Scan(&avg, &count)
+	).Scan(&histAvg, &count)
 	if err != nil {
 		return nil, err
 	}
+
 	summary := &models.RatingSummary{Count: count}
-	if avg.Valid {
-		summary.Average = avg.Float64
+	if !histAvg.Valid {
+		return summary, nil
+	}
+
+	err = s.db.QueryRow(
+		`SELECT
+			SUM(score * (1 - (SYSDATE - CAST(created_at AS DATE)) / 60)) /
+			NULLIF(SUM(1 - (SYSDATE - CAST(created_at AS DATE)) / 60), 0),
+			COUNT(*)
+		FROM ratings
+		WHERE article_slug = :1 AND (SYSDATE - CAST(created_at AS DATE)) <= 60`,
+		slug,
+	).Scan(&recentAvg, &recentCount)
+	if err != nil {
+		return nil, err
+	}
+
+	summary.Average = histAvg.Float64
+	if recentCount > 0 && recentAvg.Valid {
+		alpha := float64(recentCount) / float64(count)
+		if alpha > 0.7 {
+			alpha = 0.7
+		}
+		summary.Average = alpha*recentAvg.Float64 + (1-alpha)*histAvg.Float64
 	}
 	return summary, nil
 }
