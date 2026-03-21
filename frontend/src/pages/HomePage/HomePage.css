@@ -1,16 +1,16 @@
 .home {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 6rem 2rem 6rem;
+  padding: clamp(3.5rem, 7vw, 5rem) clamp(1rem, 4vw, 2rem) clamp(4rem, 8vw, 6rem);
 }
 
 /* ── Intro ── */
 .home-intro {
-  padding: 3rem 0 4rem;
+  padding: clamp(2rem, 4vw, 3rem) 0 clamp(2.5rem, 5vw, 4rem);
 }
 
 .home-greeting {
-  font-size: clamp(1.25rem, 3vw, 1.75rem);
+  font-size: clamp(1rem, 2.2vw, 1.75rem);
   font-weight: 800;
   color: var(--text-dark);
   margin-bottom: 1.25rem;
@@ -18,14 +18,14 @@
 }
 
 .home-tagline {
-  font-size: 1.15rem;
+  font-size: clamp(0.95rem, 2vw, 1.15rem);
   color: var(--text-secondary);
   line-height: 1.8;
   margin-bottom: 0.75rem;
 }
 
 .home-rule {
-  font-size: 0.95rem;
+  font-size: clamp(0.85rem, 1.8vw, 0.95rem);
   color: var(--primary-blue);
   font-weight: 600;
   font-style: italic;
@@ -41,16 +41,16 @@
 
 /* ── Recent articles ── */
 .home-recent {
-  padding: 3rem 0 4rem;
+  padding: clamp(2rem, 4vw, 3rem) 0 clamp(2.5rem, 5vw, 4rem);
 }
 
 .home-section-header {
-  font-size: 0.8rem;
+  font-size: clamp(0.7rem, 1.5vw, 0.8rem);
   font-weight: 700;
   color: var(--text-muted);
   text-transform: uppercase;
   letter-spacing: 2px;
-  margin-bottom: 2rem;
+  margin-bottom: clamp(1.25rem, 3vw, 2rem);
 }
 
 .home-article-list {
@@ -76,7 +76,7 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  gap: 1.5rem;
+  gap: clamp(0.75rem, 2vw, 1.5rem);
   padding: 1rem 0 1rem 1.25rem;
   text-decoration: none;
   color: inherit;
@@ -95,13 +95,13 @@
 }
 
 .home-article-title {
-  font-size: 1.1rem;
+  font-size: clamp(0.95rem, 2vw, 1.1rem);
   font-weight: 600;
   color: var(--text-dark);
 }
 
 .home-article-excerpt {
-  font-size: 0.9rem;
+  font-size: clamp(0.82rem, 1.8vw, 0.9rem);
   color: var(--text-light);
   line-height: 1.5;
 }
@@ -116,7 +116,7 @@
 }
 
 .home-article-tag {
-  font-size: 0.7rem;
+  font-size: clamp(0.65rem, 1.3vw, 0.7rem);
   font-weight: 700;
   color: var(--primary-blue);
   background: var(--tag-bg);
@@ -127,13 +127,13 @@
 }
 
 .home-article-meta time {
-  font-size: 0.8rem;
+  font-size: clamp(0.72rem, 1.5vw, 0.8rem);
   color: var(--text-muted);
 }
 
 .home-all-link {
   display: inline-block;
-  font-size: 0.95rem;
+  font-size: clamp(0.85rem, 1.8vw, 0.95rem);
   color: var(--primary-blue);
   text-decoration: none;
   font-weight: 600;
@@ -148,16 +148,16 @@
 
 /* ── Explore (categories + formats) ── */
 .home-explore {
-  padding: 3rem 0 2rem;
+  padding: clamp(2rem, 4vw, 3rem) 0 2rem;
 }
 
 .home-categories {
-  margin-bottom: 3rem;
+  margin-bottom: clamp(2rem, 4vw, 3rem);
 }
 
 .home-cat-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
   gap: 0.75rem;
 }
 
@@ -165,7 +165,7 @@
   display: flex;
   flex-direction: column;
   gap: 0.2rem;
-  padding: 1.1rem 1rem;
+  padding: clamp(0.85rem, 2vw, 1.1rem) clamp(0.75rem, 1.5vw, 1rem);
   background: var(--bg-card);
   border-radius: 10px;
   text-decoration: none;
@@ -181,12 +181,12 @@
 }
 
 .home-cat-chip strong {
-  font-size: 0.95rem;
+  font-size: clamp(0.85rem, 1.8vw, 0.95rem);
   color: var(--text-dark);
 }
 
 .home-cat-chip span {
-  font-size: 0.78rem;
+  font-size: clamp(0.7rem, 1.4vw, 0.78rem);
   color: var(--text-muted);
 }
 
@@ -197,7 +197,7 @@
 
 .home-formats-row {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 0.75rem;
 }
 
@@ -205,19 +205,19 @@
   display: flex;
   flex-direction: column;
   gap: 0.3rem;
-  padding: 1.1rem 1rem;
+  padding: clamp(0.85rem, 2vw, 1.1rem) clamp(0.75rem, 1.5vw, 1rem);
   background: var(--bg-card);
   border-radius: 10px;
   border: 1px solid var(--border-color);
 }
 
 .home-format strong {
-  font-size: 0.95rem;
+  font-size: clamp(0.85rem, 1.8vw, 0.95rem);
   color: var(--primary-blue);
 }
 
 .home-format span {
-  font-size: 0.78rem;
+  font-size: clamp(0.7rem, 1.4vw, 0.78rem);
   color: var(--text-muted);
   line-height: 1.5;
 }
@@ -234,18 +234,6 @@
 
 /* ── Responsive ── */
 @media (max-width: 640px) {
-  .home {
-    padding: 4rem 1.25rem 4rem;
-  }
-
-  .home-intro {
-    padding: 2rem 0 3rem;
-  }
-
-  .home-intro h1 {
-    font-size: 1.85rem;
-  }
-
   .home-article-item {
     flex-direction: column;
     gap: 0.5rem;
@@ -256,13 +244,5 @@
     flex-direction: row;
     align-items: center;
     gap: 0.75rem;
-  }
-
-  .home-cat-grid {
-    grid-template-columns: 1fr 1fr;
-  }
-
-  .home-formats-row {
-    grid-template-columns: 1fr;
   }
 }

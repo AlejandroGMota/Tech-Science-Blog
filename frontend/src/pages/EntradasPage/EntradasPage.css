@@ -1,12 +1,12 @@
 .entradas-page {
-  padding-top: 5rem;
+  padding-top: 2rem;
   min-height: 100vh;
   background: var(--bg-light);
 }
 
 .entradas-page h1 {
   color: var(--primary-blue);
-  font-size: 2rem;
+  font-size: clamp(1.25rem, 3vw, 2rem);
   margin-bottom: 2rem;
 }
 
@@ -24,7 +24,7 @@
   padding: 0.75rem 1rem;
   border: 2px solid var(--border-color);
   border-radius: 8px;
-  font-size: 1rem;
+  font-size: clamp(0.875rem, 2vw, 1rem);
   background: var(--bg-surface);
   color: var(--text-dark);
   transition: border-color 0.2s;
@@ -38,6 +38,7 @@
 .type-filters {
   display: flex;
   gap: 0.5rem;
+  flex-wrap: wrap;
 }
 
 .type-chip {
@@ -46,7 +47,7 @@
   border-radius: 20px;
   background: var(--bg-surface);
   color: var(--text-muted);
-  font-size: 0.85rem;
+  font-size: clamp(0.75rem, 1.8vw, 0.85rem);
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s;
@@ -74,7 +75,7 @@
   border-radius: 20px;
   background: var(--bg-surface);
   color: var(--primary-blue);
-  font-size: 0.9rem;
+  font-size: clamp(0.8rem, 1.8vw, 0.9rem);
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s;
@@ -91,7 +92,7 @@
 
 .articles-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 1.5rem;
 }
 
@@ -100,5 +101,5 @@
   text-align: center;
   color: var(--text-muted);
   padding: 3rem 0;
-  font-size: 1.1rem;
+  font-size: clamp(0.95rem, 2vw, 1.1rem);
 }
