@@ -4,7 +4,7 @@ import "github.com/AlejandroGMota/Tech-Science-Blog/backend/internal/models"
 
 type Store interface {
 	// Articles
-	GetArticles(category, search string) ([]models.Article, error)
+	GetArticles(category, search, articleType string) ([]models.Article, error)
 	GetArticleBySlug(slug string) (*models.Article, error)
 	CreateArticle(a *models.Article) error
 	UpdateArticle(slug string, a *models.Article) error

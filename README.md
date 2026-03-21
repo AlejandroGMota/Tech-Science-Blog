@@ -1,8 +1,36 @@
-# Tech & Science Blog
+# Blog — alejandrogmota.com
 
-A full-stack blog platform for technology and science articles, built with React and Go.
+Un blog personal de alguien que construye cosas y aprende en el proceso. Tecnología, negocios, ideas y todo lo que vale la pena documentar.
 
 **Live:** [blog.alejandrogmota.com](https://blog.alejandrogmota.com)
+
+---
+
+## Filosofía
+
+> Publica lo que te hubiera servido a ti hace 6 meses.
+
+El blog también alimenta tu portafolio y posicionamiento profesional. Un artículo técnico bueno vale más que 10 líneas en un CV.
+
+---
+
+## Categorías
+
+| Categoría | Contenido |
+|-----------|-----------|
+| **Code** | Arquitectura, microservicios, Go, Node.js, DevOps, lecciones técnicas reales del trabajo |
+| **Business** | Celinki, emprendimiento en México, importación, lecciones de escalar un negocio, SAT, operaciones |
+| **Ideas** | Geopolítica, ciencia, análisis de cosas que te hacen pensar |
+| **Stack de vida** | Productividad, herramientas, productos tech útiles, organización del tiempo |
+| **Aprendiendo en público** | Cosas nuevas, errores, descubrimientos — el cajón comodín con honestidad |
+
+## Formatos de artículo (ArticleType)
+
+| Tipo | Extensión | Descripción |
+|------|-----------|-------------|
+| **Deep Dive** | ~1000-1500 palabras | Cuando dominas el tema o investigaste a fondo |
+| **Nota Rápida** | ~300-500 palabras | Una lección, un error, una opinión. Publicar rápido sin perfeccionismo |
+| **TIL (Today I Learned)** | Párrafo corto | Lo que aprendiste hoy. Bajo esfuerzo, alta consistencia |
 
 ---
 
@@ -41,7 +69,7 @@ blog.alejandrogmota.com
 | Method | Endpoint | Description |
 |--------|----------|-------------|
 | GET | `/api/health` | Health check |
-| GET | `/api/articles` | List articles |
+| GET | `/api/articles` | List articles (`?category=X&search=Y&article_type=Z`) |
 | GET | `/api/articles/{slug}` | Get article by slug |
 | GET | `/api/articles/{slug}/rating` | Get article rating |
 | POST | `/api/articles/{slug}/rating` | Submit rating (1-5) |
@@ -57,38 +85,6 @@ blog.alejandrogmota.com
 | DELETE | `/api/articles/{slug}` | Delete article |
 | GET | `/api/contacto` | List contact messages |
 | DELETE | `/api/contacto/{id}` | Delete contact message |
-
----
-
-## Article Loading
-
-### Current flow
-
-```
-EntradasPage → GET /api/articles?category=X&search=Y
-               → Store.GetArticles() (no limit, ordered by published_at DESC)
-               → returns all articles in one response
-
-ArticlePage  → GET /api/articles/{slug}
-             → GET /api/articles/{slug}/rating  (separate request)
-```
-
-### Bottlenecks
-
-| Area | Issue |
-|------|-------|
-| No pagination | Full table scan returned every time |
-| No HTTP cache headers | Every navigation re-fetches from DB |
-| Dual rating request | Article detail fires 2 sequential API calls |
-| No client cache | React state reset on route change |
-
-### Optimizations (planned)
-
-1. **Pagination** — `?page=1&limit=10` on `GET /api/articles` (already in Roadmap)
-2. **HTTP caching** — `Cache-Control: public, max-age=60` on list endpoint; `stale-while-revalidate` for article detail
-3. **Embed rating in article** — merge `RatingSummary` into `Article` response to eliminate the extra request on detail page
-4. **Frontend SWR** — use a simple cache map in `useApi.js` keyed by URL, invalidated on mutations
-5. **DB index** — ensure `published_at DESC` and `category` columns are indexed (Oracle auto-indexes PKs/unique; `category` needs manual index)
 
 ---
 

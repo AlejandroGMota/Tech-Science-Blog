@@ -2,10 +2,18 @@ import { Link } from 'react-router-dom'
 import './ArticleCard.css'
 
 export default function ArticleCard({ article }) {
+  const tags = article.tags ? article.tags.split(',').map(t => t.trim()).filter(Boolean) : []
+
   return (
     <article className="article-card">
       <div className="article-card-body">
-        <span className="article-card-category">{article.category}</span>
+        {tags.length > 0 && (
+          <div className="article-card-tags">
+            {tags.map((tag) => (
+              <span key={tag} className="article-card-tag">{tag}</span>
+            ))}
+          </div>
+        )}
         <h3>
           <Link to={`/entradas/${article.slug}`}>{article.title}</Link>
         </h3>

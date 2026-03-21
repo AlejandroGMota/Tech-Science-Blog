@@ -43,6 +43,8 @@ func (s *OracleStore) migrate() error {
 			content CLOB,
 			excerpt VARCHAR2(2000),
 			category VARCHAR2(100),
+			article_type VARCHAR2(50) DEFAULT 'deep_dive',
+			tags VARCHAR2(1000),
 			cover_image VARCHAR2(1000),
 			author VARCHAR2(200),
 			published_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -77,13 +79,30 @@ func (s *OracleStore) migrate() error {
 			return err
 		}
 	}
+
+	// Migrations for existing tables
+	alterQueries := []string{
+		`ALTER TABLE articles ADD (article_type VARCHAR2(50) DEFAULT 'deep_dive')`,
+		`ALTER TABLE articles ADD (tags VARCHAR2(1000))`,
+	}
+	for _, q := range alterQueries {
+		_, err := s.db.Exec(q)
+		if err != nil {
+			// ORA-01430: column already exists — skip
+			if strings.Contains(err.Error(), "ORA-01430") {
+				continue
+			}
+			return err
+		}
+	}
+
 	return nil
 }
 
 // Articles
 
-func (s *OracleStore) GetArticles(category, search string) ([]models.Article, error) {
-	query := `SELECT id, slug, title, content, excerpt, category, cover_image, author, published_at, created_at, updated_at FROM articles WHERE 1=1`
+func (s *OracleStore) GetArticles(category, search, articleType string) ([]models.Article, error) {
+	query := `SELECT id, slug, title, content, excerpt, category, article_type, tags, cover_image, author, published_at, created_at, updated_at FROM articles WHERE 1=1`
 	var args []any
 	argIdx := 1
 
@@ -93,8 +112,13 @@ func (s *OracleStore) GetArticles(category, search string) ([]models.Article, er
 		argIdx++
 	}
 	if search != "" {
-		query += fmt.Sprintf(" AND UPPER(title) LIKE UPPER(:%d)", argIdx)
-		args = append(args, "%"+search+"%")
+		query += fmt.Sprintf(" AND (UPPER(title) LIKE UPPER(:%d) OR UPPER(tags) LIKE UPPER(:%d))", argIdx, argIdx+1)
+		args = append(args, "%"+search+"%", "%"+search+"%")
+		argIdx += 2
+	}
+	if articleType != "" {
+		query += fmt.Sprintf(" AND UPPER(article_type) = UPPER(:%d)", argIdx)
+		args = append(args, articleType)
 		argIdx++
 	}
 	query += " ORDER BY published_at DESC"
@@ -108,10 +132,16 @@ func (s *OracleStore) GetArticles(category, search string) ([]models.Article, er
 	var articles []models.Article
 	for rows.Next() {
 		var a models.Article
-		var coverImg sql.NullString
-		err := rows.Scan(&a.ID, &a.Slug, &a.Title, &a.Content, &a.Excerpt, &a.Category, &coverImg, &a.Author, &a.PublishedAt, &a.CreatedAt, &a.UpdatedAt)
+		var coverImg, articleType, tags sql.NullString
+		err := rows.Scan(&a.ID, &a.Slug, &a.Title, &a.Content, &a.Excerpt, &a.Category, &articleType, &tags, &coverImg, &a.Author, &a.PublishedAt, &a.CreatedAt, &a.UpdatedAt)
 		if err != nil {
 			return nil, err
+		}
+		if articleType.Valid {
+			a.ArticleType = articleType.String
+		}
+		if tags.Valid {
+			a.Tags = tags.String
 		}
 		if coverImg.Valid {
 			a.CoverImage = coverImg.String
@@ -123,16 +153,22 @@ func (s *OracleStore) GetArticles(category, search string) ([]models.Article, er
 
 func (s *OracleStore) GetArticleBySlug(slug string) (*models.Article, error) {
 	var a models.Article
-	var coverImg sql.NullString
+	var coverImg, articleType, tags sql.NullString
 	err := s.db.QueryRow(
-		`SELECT id, slug, title, content, excerpt, category, cover_image, author, published_at, created_at, updated_at FROM articles WHERE slug = :1`,
+		`SELECT id, slug, title, content, excerpt, category, article_type, tags, cover_image, author, published_at, created_at, updated_at FROM articles WHERE slug = :1`,
 		slug,
-	).Scan(&a.ID, &a.Slug, &a.Title, &a.Content, &a.Excerpt, &a.Category, &coverImg, &a.Author, &a.PublishedAt, &a.CreatedAt, &a.UpdatedAt)
+	).Scan(&a.ID, &a.Slug, &a.Title, &a.Content, &a.Excerpt, &a.Category, &articleType, &tags, &coverImg, &a.Author, &a.PublishedAt, &a.CreatedAt, &a.UpdatedAt)
 	if err == sql.ErrNoRows {
 		return nil, fmt.Errorf("article not found: %s", slug)
 	}
 	if err != nil {
 		return nil, err
+	}
+	if articleType.Valid {
+		a.ArticleType = articleType.String
+	}
+	if tags.Valid {
+		a.Tags = tags.String
 	}
 	if coverImg.Valid {
 		a.CoverImage = coverImg.String
@@ -148,12 +184,16 @@ func (s *OracleStore) CreateArticle(a *models.Article) error {
 	a.CreatedAt = now
 	a.UpdatedAt = now
 
+	if a.ArticleType == "" {
+		a.ArticleType = "deep_dive"
+	}
+
 	var id int64
 	_, err := s.db.Exec(
-		`INSERT INTO articles (slug, title, content, excerpt, category, cover_image, author, published_at, created_at, updated_at)
-		VALUES (:1, :2, :3, :4, :5, :6, :7, :8, :9, :10)
-		RETURNING id INTO :11`,
-		a.Slug, a.Title, a.Content, a.Excerpt, a.Category, a.CoverImage, a.Author, a.PublishedAt, a.CreatedAt, a.UpdatedAt,
+		`INSERT INTO articles (slug, title, content, excerpt, category, article_type, tags, cover_image, author, published_at, created_at, updated_at)
+		VALUES (:1, :2, :3, :4, :5, :6, :7, :8, :9, :10, :11, :12)
+		RETURNING id INTO :13`,
+		a.Slug, a.Title, a.Content, a.Excerpt, a.Category, a.ArticleType, a.Tags, a.CoverImage, a.Author, a.PublishedAt, a.CreatedAt, a.UpdatedAt,
 		sql.Out{Dest: &id},
 	)
 	if err != nil {
@@ -169,8 +209,8 @@ func (s *OracleStore) CreateArticle(a *models.Article) error {
 func (s *OracleStore) UpdateArticle(slug string, a *models.Article) error {
 	a.UpdatedAt = time.Now()
 	result, err := s.db.Exec(
-		`UPDATE articles SET title = :1, content = :2, excerpt = :3, category = :4, cover_image = :5, author = :6, updated_at = :7 WHERE slug = :8`,
-		a.Title, a.Content, a.Excerpt, a.Category, a.CoverImage, a.Author, a.UpdatedAt, slug,
+		`UPDATE articles SET title = :1, content = :2, excerpt = :3, category = :4, article_type = :5, tags = :6, cover_image = :7, author = :8, updated_at = :9 WHERE slug = :10`,
+		a.Title, a.Content, a.Excerpt, a.Category, a.ArticleType, a.Tags, a.CoverImage, a.Author, a.UpdatedAt, slug,
 	)
 	if err != nil {
 		return err

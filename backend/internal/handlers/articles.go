@@ -20,8 +20,9 @@ func NewArticleHandler(s store.Store) *ArticleHandler {
 func (h *ArticleHandler) List(w http.ResponseWriter, r *http.Request) {
 	category := r.URL.Query().Get("category")
 	search := r.URL.Query().Get("search")
+	articleType := r.URL.Query().Get("article_type")
 
-	articles, err := h.store.GetArticles(category, search)
+	articles, err := h.store.GetArticles(category, search, articleType)
 	if err != nil {
 		writeError(w, http.StatusInternalServerError, err.Error())
 		return
