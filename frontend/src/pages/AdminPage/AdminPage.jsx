@@ -7,7 +7,7 @@ export default function AdminPage() {
   const [token, setToken] = useState(localStorage.getItem('token') || '')
   const [articles, setArticles] = useState([])
   const [editing, setEditing] = useState(null)
-  const [form, setForm] = useState({ title: '', slug: '', content: '', excerpt: '', category: 'IA', author: 'Alejandro G. Mota' })
+  const [form, setForm] = useState({ title: '', slug: '', content: '', excerpt: '', category: 'Code', article_type: 'deep_dive', tags: '', author: 'Alejandro G. Mota' })
   const [loginForm, setLoginForm] = useState({ user: '', pass: '' })
   const [error, setError] = useState('')
 
@@ -55,7 +55,7 @@ export default function AdminPage() {
       } else {
         await apiFetch('/articles', { method: 'POST', body: JSON.stringify(form) })
       }
-      setForm({ title: '', slug: '', content: '', excerpt: '', category: 'IA', author: 'Alejandro G. Mota' })
+      setForm({ title: '', slug: '', content: '', excerpt: '', category: 'Code', article_type: 'deep_dive', tags: '', author: 'Alejandro G. Mota' })
       setEditing(null)
       loadArticles()
     } catch (err) {
@@ -117,11 +117,19 @@ export default function AdminPage() {
             <input type="text" placeholder="Slug" value={form.slug}
               onChange={(e) => setForm({ ...form, slug: e.target.value })} required disabled={!!editing} />
             <select value={form.category} onChange={(e) => setForm({ ...form, category: e.target.value })}>
-              <option value="IA">Inteligencia Artificial</option>
-              <option value="Blockchain">Blockchain</option>
-              <option value="Agronomía">Agronomía</option>
-              <option value="Data Science">Data Science</option>
+              <option value="Code">Code</option>
+              <option value="Business">Business</option>
+              <option value="Ideas">Ideas</option>
+              <option value="Stack de vida">Stack de vida</option>
+              <option value="Aprendiendo en público">Aprendiendo en público</option>
             </select>
+            <select value={form.article_type} onChange={(e) => setForm({ ...form, article_type: e.target.value })}>
+              <option value="deep_dive">Deep Dive</option>
+              <option value="nota_rapida">Nota Rápida</option>
+              <option value="til">TIL</option>
+            </select>
+            <input type="text" placeholder="Tags (separados por coma: Go, API, DevOps)" value={form.tags}
+              onChange={(e) => setForm({ ...form, tags: e.target.value })} />
             <input type="text" placeholder="Autor" value={form.author}
               onChange={(e) => setForm({ ...form, author: e.target.value })} />
             <textarea placeholder="Extracto / Resumen" value={form.excerpt}

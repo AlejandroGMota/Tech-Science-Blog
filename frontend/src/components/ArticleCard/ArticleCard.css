@@ -15,16 +15,21 @@
   padding: 1.5rem;
 }
 
-.article-card-category {
+.article-card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-bottom: 0.75rem;
+}
+
+.article-card-tag {
   display: inline-block;
   background: var(--accent-teal, #00BFA5);
   color: white;
-  padding: 0.25rem 0.75rem;
-  border-radius: 20px;
-  font-size: 0.75rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: 12px;
+  font-size: 0.7rem;
   font-weight: 600;
-  text-transform: uppercase;
-  margin-bottom: 0.75rem;
 }
 
 .article-card h3 {

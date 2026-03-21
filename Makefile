@@ -9,7 +9,7 @@ dev-back:
 	cd backend && ADMIN_PASS=dev123 go run ./cmd/api/
 
 dev:
-	make dev-back & make dev-front
+	trap 'kill 0' EXIT; make dev-back & make dev-front & wait
 
 build-front:
 	cd frontend && npx vite build

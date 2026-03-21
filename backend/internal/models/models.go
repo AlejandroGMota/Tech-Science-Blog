@@ -9,6 +9,8 @@ type Article struct {
 	Content     string    `json:"content"`
 	Excerpt     string    `json:"excerpt"`
 	Category    string    `json:"category"`
+	ArticleType string    `json:"article_type"`
+	Tags        string    `json:"tags"`
 	CoverImage  string    `json:"cover_image"`
 	Author      string    `json:"author"`
 	PublishedAt time.Time `json:"published_at"`

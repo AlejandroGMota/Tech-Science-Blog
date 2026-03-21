@@ -35,7 +35,7 @@ func (s *MemoryStore) genID() string {
 
 // Articles
 
-func (s *MemoryStore) GetArticles(category, search string) ([]models.Article, error) {
+func (s *MemoryStore) GetArticles(category, search, articleType string) ([]models.Article, error) {
 	s.mu.RLock()
 	defer s.mu.RUnlock()
 
@@ -44,7 +44,10 @@ func (s *MemoryStore) GetArticles(category, search string) ([]models.Article, er
 		if category != "" && !strings.EqualFold(a.Category, category) {
 			continue
 		}
-		if search != "" && !strings.Contains(strings.ToLower(a.Title), strings.ToLower(search)) {
+		if search != "" && !strings.Contains(strings.ToLower(a.Title), strings.ToLower(search)) && !strings.Contains(strings.ToLower(a.Tags), strings.ToLower(search)) {
+			continue
+		}
+		if articleType != "" && !strings.EqualFold(a.ArticleType, articleType) {
 			continue
 		}
 		result = append(result, *a)
