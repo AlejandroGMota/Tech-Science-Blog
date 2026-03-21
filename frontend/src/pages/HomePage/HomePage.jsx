@@ -1,46 +1,92 @@
-import { useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import { apiFetch } from '../../hooks/useApi'
 import './HomePage.css'
 
 export default function HomePage() {
-  useEffect(() => { document.title = 'Alejandro G. Mota — Blog' }, [])
+  const [recent, setRecent] = useState([])
+
+  useEffect(() => {
+    document.title = 'Tech & Science Blog'
+    apiFetch('/articles')
+      .then((data) => setRecent(data.slice(0, 5)))
+      .catch(() => setRecent([]))
+  }, [])
 
   return (
     <div className="home">
-      <section className="hero">
-        <div className="hero-content">
-          <h1>Alejandro G. Mota</h1>
-          <p>Construyo cosas y aprendo en el proceso. Code, Business, Ideas y todo lo que vale la pena documentar.</p>
-          <Link to="/entradas" className="hero-cta">Ver Artículos</Link>
-        </div>
+      {/* ── 1. Intro ── */}
+      <section className="home-intro">
+        <h1 className="home-greeting">Estas en:</h1>
+        <p className="home-tagline">
+          Un espacio para documentar lo que aprendo construyendo software,
+          escalando un negocio y tratando de entender el mundo.
+        </p>
+        <p className="home-rule">
+          La regla: publica lo que te hubiera servido a ti hace 6 meses.
+        </p>
       </section>
 
-      <section className="about">
-        <div className="container">
-          <h2>Sobre este blog</h2>
-          <p>
-            Publico lo que me hubiera servido a mí hace 6 meses.
-            Desde lecciones técnicas reales hasta análisis de lo que pasa en el mundo
-            — sin filtro y aprendiendo en público.
-          </p>
-        </div>
+      <hr className="home-divider" />
+
+      {/* ── 2. Recientes ── */}
+      <section className="home-recent">
+        <h2 className="home-section-header">Recientes</h2>
+        <ul className="home-article-list">
+          {recent.map((a) => (
+            <li key={a.id}>
+              <Link to={`/entradas/${a.slug}`} className="home-article-item">
+                <div className="home-article-info">
+                  <span className="home-article-title">{a.title}</span>
+                  <span className="home-article-excerpt">{a.excerpt}</span>
+                </div>
+                <div className="home-article-meta">
+                  <span className="home-article-tag">{a.category}</span>
+                  <time>{new Date(a.published_at).toLocaleDateString('es-MX', { day: 'numeric', month: 'short', year: 'numeric' })}</time>
+                </div>
+              </Link>
+            </li>
+          ))}
+        </ul>
+        <Link to="/entradas" className="home-all-link">Ver todos los artículos →</Link>
       </section>
 
-      <section className="services">
-        <div className="container">
-          <h2>Categorías</h2>
-          <div className="services-grid">
-            <div className="service-card">
-              <h3>Code</h3>
-              <p>Arquitectura, microservicios, Go, Node.js, DevOps y lecciones técnicas del trabajo.</p>
+      <hr className="home-divider" />
+
+      {/* ── 3. Explora ── */}
+      <section className="home-explore">
+        <div className="home-categories">
+          <h2 className="home-section-header">Categorías</h2>
+          <div className="home-cat-grid">
+            {[
+              { name: 'Code', desc: 'Go, Node.js, arquitectura, DevOps' },
+              { name: 'Business', desc: 'Emprendimiento, importación, operaciones' },
+              { name: 'Ideas', desc: 'Geopolítica, ciencia, opinión' },
+              { name: 'Stack de vida', desc: 'Productividad, herramientas' },
+              { name: 'Aprendiendo en público', desc: 'Errores y descubrimientos' },
+            ].map((cat) => (
+              <Link key={cat.name} to="/entradas" className="home-cat-chip">
+                <strong>{cat.name}</strong>
+                <span>{cat.desc}</span>
+              </Link>
+            ))}
+          </div>
+        </div>
+
+        <div className="home-formats">
+          <h2 className="home-section-header">Formatos</h2>
+          <div className="home-formats-row">
+            <div className="home-format">
+              <strong>Deep Dive</strong>
+              <span><em>1000-1500 palabras.</em> Investigación a fondo.</span>
             </div>
-            <div className="service-card">
-              <h3>Business</h3>
-              <p>Emprendimiento, importación, operaciones y lecciones de escalar un negocio en México.</p>
+            <div className="home-format">
+              <strong>Nota Rápida</strong>
+              <span><em>300-500 palabras.</em> Una lección, sin perfeccionismo.</span>
             </div>
-            <div className="service-card">
-              <h3>Ideas</h3>
-              <p>Geopolítica, ciencia y análisis de cosas que te hacen pensar.</p>
+            <div className="home-format">
+              <strong>TIL</strong>
+              <span><em>Párrafo corto.</em> Lo que aprendí hoy.</span>
             </div>
           </div>
         </div>

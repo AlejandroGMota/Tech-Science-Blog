@@ -1,11 +1,11 @@
 .entradas-page {
   padding-top: 5rem;
   min-height: 100vh;
-  background: #f8f9fa;
+  background: var(--bg-light);
 }
 
 .entradas-page h1 {
-  color: #0A4D8C;
+  color: var(--primary-blue);
   font-size: 2rem;
   margin-bottom: 2rem;
 }
@@ -22,15 +22,17 @@
   flex: 1;
   min-width: 200px;
   padding: 0.75rem 1rem;
-  border: 2px solid #e0e0e0;
+  border: 2px solid var(--border-color);
   border-radius: 8px;
   font-size: 1rem;
+  background: var(--bg-surface);
+  color: var(--text-dark);
   transition: border-color 0.2s;
 }
 
 .search-input:focus {
   outline: none;
-  border-color: #0A4D8C;
+  border-color: var(--primary-blue);
 }
 
 .type-filters {
@@ -40,10 +42,10 @@
 
 .type-chip {
   padding: 0.5rem 1rem;
-  border: 2px solid #6c757d;
+  border: 2px solid var(--text-muted);
   border-radius: 20px;
-  background: white;
-  color: #6c757d;
+  background: var(--bg-surface);
+  color: var(--text-muted);
   font-size: 0.85rem;
   font-weight: 500;
   cursor: pointer;
@@ -51,12 +53,12 @@
 }
 
 .type-chip:hover {
-  background: #f0f0f0;
+  background: var(--bg-card);
 }
 
 .type-chip.active {
-  background: #6c757d;
-  color: white;
+  background: var(--text-muted);
+  color: var(--bg-surface);
 }
 
 .category-filters {
@@ -68,10 +70,10 @@
 
 .category-chip {
   padding: 0.5rem 1.25rem;
-  border: 2px solid #0A4D8C;
+  border: 2px solid var(--primary-blue);
   border-radius: 20px;
-  background: white;
-  color: #0A4D8C;
+  background: var(--bg-surface);
+  color: var(--primary-blue);
   font-size: 0.9rem;
   font-weight: 500;
   cursor: pointer;
@@ -79,11 +81,11 @@
 }
 
 .category-chip:hover {
-  background: #e8f0f8;
+  background: var(--tag-bg);
 }
 
 .category-chip.active {
-  background: #0A4D8C;
+  background: var(--primary-blue);
   color: white;
 }
 
@@ -96,7 +98,7 @@
 .loading,
 .no-results {
   text-align: center;
-  color: #999;
+  color: var(--text-muted);
   padding: 3rem 0;
   font-size: 1.1rem;
 }
