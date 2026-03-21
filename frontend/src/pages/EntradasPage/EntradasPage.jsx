@@ -24,6 +24,8 @@ export default function EntradasPage() {
   const [search, setSearch] = useState('')
   const [loading, setLoading] = useState(true)
 
+  useEffect(() => { document.title = 'Artículos — Alejandro G. Mota' }, [])
+
   useEffect(() => {
     const params = new URLSearchParams()
     if (category) params.set('category', category)

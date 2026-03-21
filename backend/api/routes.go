@@ -39,6 +39,7 @@ func NewRouter(cfg *config.Config) http.Handler {
 	articleH := handlers.NewArticleHandler(s)
 	ratingH := handlers.NewRatingHandler(s)
 	contactH := handlers.NewContactHandler(s)
+	seoH := handlers.NewSEOHandler(s)
 
 	mux := http.NewServeMux()
 
@@ -68,6 +69,10 @@ func NewRouter(cfg *config.Config) http.Handler {
 	mux.HandleFunc("POST /api/contacto", contactH.Create)
 	mux.Handle("GET /api/contacto", auth(http.HandlerFunc(contactH.List)))
 	mux.Handle("DELETE /api/contacto/{id}", auth(http.HandlerFunc(contactH.Delete)))
+
+	// SEO
+	mux.HandleFunc("GET /robots.txt", seoH.RobotsTXT)
+	mux.HandleFunc("GET /sitemap.xml", seoH.SitemapXML)
 
 	// Serve frontend SPA
 	mux.HandleFunc("GET /admin/", serveSPA("admin-dist"))
