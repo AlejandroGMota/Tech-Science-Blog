@@ -6,7 +6,7 @@
   background: var(--navbar-bg);
   backdrop-filter: blur(10px);
   z-index: 1000;
-  padding: 1rem 0;
+  padding: 0.5rem 0;
   transition: transform 0.3s ease;
 }
 
@@ -17,7 +17,7 @@
 .navbar-container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 2rem;
+  padding: 0 clamp(0.75rem, 3vw, 2rem);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -25,7 +25,7 @@
 
 .navbar-logo {
   color: white;
-  font-size: clamp(1rem, 2.5vw, 1.5rem);
+  font-size: clamp(0.7rem, 1.6vw, 0.9rem);
   font-weight: 350;
   text-decoration: none;
   display: flex;
@@ -35,7 +35,7 @@
 }
 
 .navbar-logo-img {
-  height: 36px;
+  height: 22px;
   width: auto;
 }
 
@@ -49,7 +49,7 @@
   color: rgba(255, 255, 255, 0.9);
   text-decoration: none;
   font-weight: 600;
-  font-size: clamp(0.9rem, 2vw, 1.1rem);
+  font-size: clamp(0.7rem, 1.5vw, 0.85rem);
   transition: color 0.2s;
 }
 
