@@ -1,5 +1,5 @@
 .footer {
-  background: #1a1a2e;
+  background: var(--footer-bg);
   color: rgba(255, 255, 255, 0.7);
   padding: 2rem 0;
   text-align: center;
@@ -10,4 +10,27 @@
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 2rem;
+}
+
+.footer-links {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-bottom: 1rem;
+}
+
+.footer-links a {
+  color: rgba(255, 255, 255, 0.7);
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: color 0.2s;
+}
+
+.footer-links a:hover {
+  color: white;
+}
+
+.footer p {
+  font-size: 0.85rem;
+  opacity: 0.6;
 }
