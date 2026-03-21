@@ -1,8 +1,3 @@
-promt-entradas.txt
-entradas.py
-promt-entradas.txt
-nueva-entrada.txt
-ideasBlog.txt
 
 # Environment variables
 .env
@@ -27,3 +22,6 @@ backend/vendor/
 # SSH keys
 *.pem
 vm_key*
+
+#temporal files
+tmp/

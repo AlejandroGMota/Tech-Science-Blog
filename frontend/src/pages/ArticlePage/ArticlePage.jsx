@@ -11,7 +11,10 @@ export default function ArticlePage() {
 
   useEffect(() => {
     apiFetch(`/articles/${slug}`)
-      .then(setArticle)
+      .then((data) => {
+        setArticle(data)
+        document.title = `${data.title} — Alejandro G. Mota`
+      })
       .catch((err) => setError(err.message))
   }, [slug])
 
