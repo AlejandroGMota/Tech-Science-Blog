@@ -76,7 +76,8 @@ func NewRouter(cfg *config.Config) http.Handler {
 
 	// Serve frontend SPA
 	mux.HandleFunc("GET /admin/", serveSPA("admin-dist"))
-	mux.HandleFunc("GET /", serveSPA("public-dist"))
+	publicSPA := handlers.NewSPAHandler(s, "public-dist")
+	mux.Handle("GET /", publicSPA)
 
 	// Apply CORS
 	return middleware.CORS(cfg.AllowedOrigins)(mux)
