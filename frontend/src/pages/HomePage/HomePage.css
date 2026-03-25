@@ -232,6 +232,37 @@
   color: var(--primary-blue);
 }
 
+/* ── Skeleton loading ── */
+.home-skeleton-item {
+  padding: 1rem 0 1rem 1.25rem;
+}
+
+.home-skeleton-item + .home-skeleton-item {
+  margin-top: 0.5rem;
+}
+
+.home-skeleton-line {
+  background: var(--border-color);
+  border-radius: 4px;
+  animation: skeleton-pulse 1.2s ease-in-out infinite;
+}
+
+.home-skeleton-title {
+  height: 1.1rem;
+  width: 60%;
+  margin-bottom: 0.5rem;
+}
+
+.home-skeleton-excerpt {
+  height: 0.9rem;
+  width: 85%;
+}
+
+@keyframes skeleton-pulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 1; }
+}
+
 /* ── Responsive ── */
 @media (max-width: 640px) {
   .home-article-item {
