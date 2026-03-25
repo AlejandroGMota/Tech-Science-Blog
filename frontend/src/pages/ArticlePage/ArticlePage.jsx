@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { apiFetch } from '../../hooks/useApi'
 import ArticleRating from '../../components/ArticleRating/ArticleRating'
@@ -8,6 +8,7 @@ export default function ArticlePage() {
   const { slug } = useParams()
   const [article, setArticle] = useState(null)
   const [error, setError] = useState(null)
+  const bodyRef = useRef(null)
 
   useEffect(() => {
     apiFetch(`/articles/${slug}`)
@@ -17,6 +18,14 @@ export default function ArticlePage() {
       })
       .catch((err) => setError(err.message))
   }, [slug])
+
+  useEffect(() => {
+    if (!bodyRef.current) return
+    bodyRef.current.querySelectorAll('img').forEach((img) => {
+      img.loading = 'lazy'
+      img.decoding = 'async'
+    })
+  }, [article])
 
   if (error) {
     return (
@@ -57,6 +66,7 @@ export default function ArticlePage() {
           <ArticleRating slug={slug} />
 
           <div
+            ref={bodyRef}
             className="article-body"
             dangerouslySetInnerHTML={{ __html: article.content }}
           />

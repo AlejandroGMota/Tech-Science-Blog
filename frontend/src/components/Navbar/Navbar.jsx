@@ -22,7 +22,7 @@ export default function Navbar() {
     <nav className={`navbar${hidden ? ' navbar-hidden' : ''}`}>
       <div className="navbar-container">
         <Link to="/" className="navbar-logo">
-          <img src="/logo.png" alt="Tech & Science Blog" className="navbar-logo-img" />
+          <img src="/logo-44.png" alt="Tech & Science Blog" className="navbar-logo-img" width="22" height="22" />
           Tech & Science Blog
         </Link>
         <div className="navbar-links">
