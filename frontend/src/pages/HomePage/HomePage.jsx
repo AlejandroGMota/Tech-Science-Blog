@@ -4,7 +4,7 @@ import { apiFetch } from '../../hooks/useApi'
 import './HomePage.css'
 
 export default function HomePage() {
-  const [recent, setRecent] = useState([])
+  const [recent, setRecent] = useState(null)
 
   useEffect(() => {
     document.title = 'Tech & Science Blog'
@@ -33,20 +33,29 @@ export default function HomePage() {
       <section className="home-recent">
         <h2 className="home-section-header">Recientes</h2>
         <ul className="home-article-list">
-          {recent.map((a) => (
-            <li key={a.id}>
-              <Link to={`/entradas/${a.slug}`} className="home-article-item">
-                <div className="home-article-info">
-                  <span className="home-article-title">{a.title}</span>
-                  <span className="home-article-excerpt">{a.excerpt}</span>
-                </div>
-                <div className="home-article-meta">
-                  <span className="home-article-tag">{a.category}</span>
-                  <time>{new Date(a.published_at).toLocaleDateString('es-MX', { day: 'numeric', month: 'short', year: 'numeric' })}</time>
-                </div>
-              </Link>
-            </li>
-          ))}
+          {recent === null ? (
+            Array.from({ length: 5 }, (_, i) => (
+              <li key={i} className="home-skeleton-item">
+                <div className="home-skeleton-line home-skeleton-title" />
+                <div className="home-skeleton-line home-skeleton-excerpt" />
+              </li>
+            ))
+          ) : (
+            recent.map((a) => (
+              <li key={a.id}>
+                <Link to={`/entradas/${a.slug}`} className="home-article-item">
+                  <div className="home-article-info">
+                    <span className="home-article-title">{a.title}</span>
+                    <span className="home-article-excerpt">{a.excerpt}</span>
+                  </div>
+                  <div className="home-article-meta">
+                    <span className="home-article-tag">{a.category}</span>
+                    <time>{new Date(a.published_at).toLocaleDateString('es-MX', { day: 'numeric', month: 'short', year: 'numeric' })}</time>
+                  </div>
+                </Link>
+              </li>
+            ))
+          )}
         </ul>
         <Link to="/entradas" className="home-all-link">Ver todos los artículos →</Link>
       </section>
