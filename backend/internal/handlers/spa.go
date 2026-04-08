@@ -61,7 +61,10 @@ func extractSlug(path string) string {
 	if strings.HasPrefix(path, "/entradas/") {
 		parts := strings.SplitN(path, "/entradas/", 2)
 		if len(parts) == 2 && parts[1] != "" && !strings.Contains(parts[1], "/") {
-			return parts[1]
+			slug := parts[1]
+			// Remove .html extension if present
+			slug = strings.TrimSuffix(slug, ".html")
+			return slug
 		}
 	}
 	return ""
@@ -109,11 +112,12 @@ func injectArticleMeta(htmlStr, title, excerpt, slug, coverImage, author, publis
 		`<meta name="twitter:description" content="Code, Business, Ideas y todo lo que vale la pena documentar." />`,
 		fmt.Sprintf(`<meta name="twitter:description" content="%s" />`, safeExcerpt), 1)
 
-	// Add og:image and twitter:image if cover image exists
-	var imageTag string
-	if coverImage != "" {
-		imageTag = fmt.Sprintf("\n    <meta property=\"og:image\" content=\"%s\" />\n    <meta name=\"twitter:image\" content=\"%s\" />", html.EscapeString(coverImage), html.EscapeString(coverImage))
+	// Add og:image and twitter:image — use cover image or fallback to blog logo
+	image := coverImage
+	if image == "" {
+		image = domain + "/favicon-64.png"
 	}
+	imageTag := fmt.Sprintf("\n    <meta property=\"og:image\" content=\"%s\" />\n    <meta name=\"twitter:image\" content=\"%s\" />", html.EscapeString(image), html.EscapeString(image))
 
 	// Build JSON-LD
 	jsonLD := map[string]interface{}{
@@ -138,9 +142,7 @@ func injectArticleMeta(htmlStr, title, excerpt, slug, coverImage, author, publis
 			},
 		},
 	}
-	if coverImage != "" {
-		jsonLD["image"] = coverImage
-	}
+	jsonLD["image"] = image
 	if category != "" {
 		jsonLD["articleSection"] = category
 	}
