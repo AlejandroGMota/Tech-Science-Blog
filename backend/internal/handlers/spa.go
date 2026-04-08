@@ -48,7 +48,7 @@ func (h *SPAHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	// Check if this is an article page
 	if slug := extractSlug(r.URL.Path); slug != "" {
 		if article, err := h.store.GetArticleBySlug(slug); err == nil {
-			htmlStr = injectArticleMeta(htmlStr, article.Title, article.Excerpt, article.Slug, article.CoverImage, article.Author, article.PublishedAt.Format("2006-01-02"), article.Category, article.Content)
+			htmlStr = injectArticleMeta(htmlStr, article.Title, article.Excerpt, article.Slug, article.CoverImage, article.Author, article.PublishedAt.Format("2006-01-02"), article.UpdatedAt.Format("2006-01-02"), article.Category, article.Content)
 		}
 	}
 
@@ -67,7 +67,7 @@ func extractSlug(path string) string {
 	return ""
 }
 
-func injectArticleMeta(htmlStr, title, excerpt, slug, coverImage, author, publishedAt, category, content string) string {
+func injectArticleMeta(htmlStr, title, excerpt, slug, coverImage, author, publishedAt, updatedAt, category, content string) string {
 	safeTitle := html.EscapeString(title)
 	safeExcerpt := html.EscapeString(excerpt)
 	articleURL := domain + "/entradas/" + slug
@@ -122,11 +122,20 @@ func injectArticleMeta(htmlStr, title, excerpt, slug, coverImage, author, publis
 		"headline":      title,
 		"description":   excerpt,
 		"url":           articleURL,
-		"author":        map[string]string{"@type": "Person", "name": author},
+		"author": map[string]string{
+			"@type": "Person",
+			"name":  author,
+			"url":   "https://alejandrogmota.com",
+		},
 		"datePublished": publishedAt,
+		"dateModified":  updatedAt,
 		"publisher": map[string]interface{}{
 			"@type": "Organization",
 			"name":  "Alejandro G. Mota",
+			"logo": map[string]interface{}{
+				"@type": "ImageObject",
+				"url":   "https://blog.alejandrogmota.com/favicon-64.png",
+			},
 		},
 	}
 	if coverImage != "" {
