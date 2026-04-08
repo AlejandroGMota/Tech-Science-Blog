@@ -48,7 +48,7 @@ func (h *SPAHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	// Check if this is an article page
 	if slug := extractSlug(r.URL.Path); slug != "" {
 		if article, err := h.store.GetArticleBySlug(slug); err == nil {
-			htmlStr = injectArticleMeta(htmlStr, article.Title, article.Excerpt, article.Slug, article.CoverImage, article.Author, article.PublishedAt.Format("2006-01-02"), article.Category)
+			htmlStr = injectArticleMeta(htmlStr, article.Title, article.Excerpt, article.Slug, article.CoverImage, article.Author, article.PublishedAt.Format("2006-01-02"), article.Category, article.Content)
 		}
 	}
 
@@ -67,7 +67,7 @@ func extractSlug(path string) string {
 	return ""
 }
 
-func injectArticleMeta(htmlStr, title, excerpt, slug, coverImage, author, publishedAt, category string) string {
+func injectArticleMeta(htmlStr, title, excerpt, slug, coverImage, author, publishedAt, category, content string) string {
 	safeTitle := html.EscapeString(title)
 	safeExcerpt := html.EscapeString(excerpt)
 	articleURL := domain + "/entradas/" + slug
@@ -142,6 +142,11 @@ func injectArticleMeta(htmlStr, title, excerpt, slug, coverImage, author, publis
 	// Inject image tags and JSON-LD before </head>
 	injection := imageTag + "\n    " + scriptTag
 	htmlStr = strings.Replace(htmlStr, "</head>", injection+"\n  </head>", 1)
+
+	// Inject article content into root div for crawler visibility
+	htmlStr = strings.Replace(htmlStr,
+		`<div id="root"></div>`,
+		fmt.Sprintf(`<div id="root"><article class="crawlable-content">%s</article></div>`, content), 1)
 
 	return htmlStr
 }
