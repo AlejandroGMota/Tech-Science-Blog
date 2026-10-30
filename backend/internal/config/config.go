@@ -7,8 +7,9 @@ type Config struct {
 	AllowedOrigins string
 	AdminUser      string
 	AdminPass      string
-	DBType         string // "memory" or "oracle"
+	DBType         string // "memory", "oracle" or "sqlite"
 	OracleDBDSN    string
+	SQLitePath     string
 	OCIBucketName  string
 	OCINamespace   string
 	OCIRegion      string
@@ -22,6 +23,7 @@ func Load() *Config {
 		AdminPass:      getEnv("ADMIN_PASS", ""),
 		DBType:         getEnv("DB_TYPE", "memory"),
 		OracleDBDSN:    getEnv("ORACLE_DB_DSN", ""),
+		SQLitePath:     getEnv("SQLITE_PATH", "data/blog.db"),
 		OCIBucketName:  getEnv("OCI_BUCKET_NAME", "tech-blog-images"),
 		OCINamespace:   getEnv("OCI_BUCKET_NAMESPACE", "axva0xxfvkwr"),
 		OCIRegion:      getEnv("OCI_REGION", "mx-queretaro-1"),

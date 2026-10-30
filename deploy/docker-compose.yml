@@ -1,0 +1,27 @@
+# Runs on the VM:
+#   docker compose -f deploy/docker-compose.yml up -d --build
+# The whole database is ~/blog-data/blog.db; moving hosts is copying that
+# directory, ~/tech-blog/.env and the frontend builds.
+services:
+  tech-blog:
+    build: ../backend
+    image: tech-blog-api:local
+    container_name: tech-blog
+    restart: unless-stopped
+    env_file: ${HOME}/tech-blog/.env
+    user: "${UID:-1001}:${UID:-1001}"
+    environment:
+      DB_TYPE: sqlite
+      SQLITE_PATH: /app/data/blog.db
+      PORT: "8081"
+    ports:
+      - "127.0.0.1:8081:8081"
+    volumes:
+      - ${HOME}/blog-data:/app/data
+      - ${HOME}/tech-blog/backend/public-dist:/app/public-dist:ro
+      - ${HOME}/tech-blog/backend/admin-dist:/app/admin-dist:ro
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:8081/api/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3

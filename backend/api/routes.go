@@ -25,6 +25,13 @@ func NewRouter(cfg *config.Config) http.Handler {
 		}
 		s = oracleStore
 		log.Println("Using Oracle Autonomous Database")
+	case "sqlite":
+		sqliteStore, err := store.NewSQLiteStore(cfg.SQLitePath)
+		if err != nil {
+			log.Fatalf("Failed to open SQLite DB: %v", err)
+		}
+		s = sqliteStore
+		log.Printf("Using SQLite at %s", cfg.SQLitePath)
 	default:
 		s = store.NewMemoryStore()
 		store.SeedArticles(s)
