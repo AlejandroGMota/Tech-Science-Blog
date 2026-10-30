@@ -25,6 +25,14 @@ export default function ArticlePage() {
       img.loading = 'lazy'
       img.decoding = 'async'
     })
+    // Las tablas del markdown no caben en pantallas angostas: scroll propio
+    bodyRef.current.querySelectorAll('table').forEach((table) => {
+      if (table.parentElement?.classList.contains('table-scroll')) return
+      const wrap = document.createElement('div')
+      wrap.className = 'table-scroll'
+      table.parentNode.insertBefore(wrap, table)
+      wrap.appendChild(table)
+    })
   }, [article])
 
   if (error) {

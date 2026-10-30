@@ -15,6 +15,14 @@
   --navbar-bg: rgba(10, 77, 140, 0.95);
   --footer-bg: #1a1a2e;
   --tag-bg: rgba(10, 77, 140, 0.07);
+  --code-bg: #f4f6f8;
+  --code-border: #e3e8ed;
+  --code-text: #1a1a2e;
+  --code-inline-bg: rgba(10, 77, 140, 0.08);
+  --table-head-bg: #f4f6f8;
+  --table-border: #e3e8ed;
+  --table-row-alt: #fafbfc;
+  --navbar-h: 56px;
 }
 
 
@@ -50,6 +58,13 @@ body {
   --navbar-bg: rgba(35, 35, 35, 0.95);
   --footer-bg: #0a0a0a;
   --tag-bg: rgba(74, 158, 222, 0.12);
+  --code-bg: #15181b;
+  --code-border: #2c2c2c;
+  --code-text: #dcdcdc;
+  --code-inline-bg: rgba(74, 158, 222, 0.14);
+  --table-head-bg: #232323;
+  --table-border: #2c2c2c;
+  --table-row-alt: #191919;
 }
 
 #root {
@@ -59,7 +74,7 @@ body {
 }
 
 main {
-  padding-top: 60px;
+  padding-top: var(--navbar-h);
 }
 
 a {
@@ -73,5 +88,5 @@ img {
 .container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 4rem 2rem;
+  padding: clamp(2rem, 5vw, 4rem) clamp(0.75rem, 2.5vw, 2rem);
 }

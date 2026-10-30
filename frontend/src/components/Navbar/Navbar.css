@@ -6,7 +6,9 @@
   background: var(--navbar-bg);
   backdrop-filter: blur(10px);
   z-index: 1000;
-  padding: 0.5rem 0;
+  min-height: var(--navbar-h);
+  display: flex;
+  align-items: center;
   transition: transform 0.3s ease;
 }
 
@@ -15,9 +17,10 @@
 }
 
 .navbar-container {
+  width: 100%;
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 clamp(0.75rem, 3vw, 2rem);
+  padding: 0 clamp(0.75rem, 2.5vw, 2rem);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -25,13 +28,14 @@
 
 .navbar-logo {
   color: white;
-  font-size: clamp(0.7rem, 1.6vw, 0.9rem);
-  font-weight: 350;
+  font-size: clamp(0.8rem, 1.6vw, 0.95rem);
+  font-weight: 600;
+  letter-spacing: -0.2px;
   text-decoration: none;
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  flex-direction: column;
+  white-space: nowrap;
 }
 
 .navbar-logo-img {
@@ -41,7 +45,7 @@
 
 .navbar-links {
   display: flex;
-  gap: 2rem;
+  gap: clamp(0.85rem, 3vw, 2rem);
   align-items: center;
 }
 
@@ -49,7 +53,7 @@
   color: rgba(255, 255, 255, 0.9);
   text-decoration: none;
   font-weight: 600;
-  font-size: clamp(0.7rem, 1.5vw, 0.85rem);
+  font-size: clamp(0.8rem, 1.5vw, 0.9rem);
   transition: color 0.2s;
 }
 
