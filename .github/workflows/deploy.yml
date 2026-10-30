@@ -20,40 +20,41 @@ jobs:
           host: ${{ secrets.VM_HOST }}
           username: ${{ secrets.VM_USER }}
           key: ${{ secrets.VM_SSH_KEY }}
-          envs: ADMIN_USER,ADMIN_PASS,ORACLE_DB_DSN
+          envs: ADMIN_USER,ADMIN_PASS
           script: |
-            export PATH=$PATH:/usr/local/go/bin:/usr/local/node/bin
+            set -euo pipefail
+            export PATH=$PATH:/usr/local/node/bin
 
             cd ~/tech-blog
             git pull origin main
 
-            # Write .env from secrets
+            # Write .env from secrets. The database is SQLite in ~/blog-data,
+            # mounted into the container (deploy/docker-compose.yml).
             printf '%s\n' \
               "PORT=8081" \
               "ALLOWED_ORIGINS=https://blog.alejandrogmota.com" \
-              "DB_TYPE=oracle" \
-              "TNS_ADMIN=/home/ubuntu/tech-blog/wallet" \
+              "DB_TYPE=sqlite" \
               "ADMIN_USER=${ADMIN_USER}" \
               "ADMIN_PASS=${ADMIN_PASS}" \
-              "ORACLE_DB_DSN=${ORACLE_DB_DSN}" \
               > .env
 
-            # Build frontend
+            # Build frontend and admin; the container mounts both dist dirs.
             cd frontend
             npm ci
             npx vite build
-
-            # Build admin
             npx vite build --config vite.admin.config.js
             mv ../backend/admin-dist/admin.html ../backend/admin-dist/index.html
 
-            # Build backend
-            cd ../backend
-            go build -o tech-blog-api ./cmd/api/
+            # Build and restart the API container.
+            cd ~/tech-blog
+            docker compose -f deploy/docker-compose.yml up -d --build
 
-            # Restart service
-            sudo systemctl restart tech-blog
+            for i in $(seq 1 20); do
+              curl -sf http://127.0.0.1:8081/api/health > /dev/null && echo healthy && exit 0
+              sleep 2
+            done
+            docker logs --tail 50 tech-blog
+            exit 1
         env:
           ADMIN_USER: ${{ secrets.ADMIN_USER }}
           ADMIN_PASS: ${{ secrets.ADMIN_PASS }}
-          ORACLE_DB_DSN: ${{ secrets.ORACLE_DB_DSN }}
